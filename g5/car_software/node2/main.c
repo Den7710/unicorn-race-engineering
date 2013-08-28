@@ -32,6 +32,7 @@ static uint8_t mode=0;
 void init(void);
 char gearbut = 0;
 char j = 0;
+int gearActive = 0;
 
 int main (void)
 {	
@@ -113,13 +114,14 @@ int main (void)
 
 	sendtekst("Beep\n\r");
 	display_test();
+    
+    params.GearEst = 0;
 
 	char dataout[] = {gear,0};
 
 	while (1) {
 		_delay_ms(20);
 
-		
 		/* Display selected parameter */
 		if (mode == RPM_MODE) {		
 			set_rpm(params.rpm, LED_ON);
@@ -206,31 +208,33 @@ int main (void)
 		}
 
 		/* Indicator for Gear */
-		if (params.GearNeutral > 0) {
-			SEG_N(LED_BLINK2);
+		if (params.GearNeutral < 0) {
+			SEG_N(LED_ON);
 		} else {
 			if (params.GearEst > 6) {
 				SEG_OFF();
 			} else {
 				switch (params.GearEst) {
-
+                    case 0:
+						SEG_N(LED_ON);
+						break;
 					case 1:
-						SEG_1(LED_BLINK2);
+						SEG_1(LED_ON);
 						break;
 					case 2:
-						SEG_2(LED_BLINK2);
+						SEG_2(LED_ON);
 						break;
 					case 3:
-						SEG_3(LED_BLINK2);
+						SEG_3(LED_ON);
 						break;
 					case 4:
-						SEG_4(LED_BLINK2);
+						SEG_4(LED_ON);
 						break;
 					case 5:
-						SEG_5(LED_BLINK2);
+						SEG_5(LED_ON);
 						break;
 					case 6:
-						SEG_6(LED_BLINK2);
+						SEG_6(LED_ON);
 						break;
 					default:
 						break;
